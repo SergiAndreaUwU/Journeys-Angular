@@ -35,7 +35,8 @@
     </div>
     <div class="col-md-3 mb-3">
       <label for="validationCustom04">State</label>
-      <select class="custom-select" >
+      <select class="custom-select" 
+        formControlName="state">
         <option selected disabled value="">Choose...</option>
         
         <option *ngFor="let state of states" > {{state}}</option>
@@ -103,6 +104,10 @@
 
   <button class="btn btn-primary" (click)="populateData()">test</button>
 </form>
+
+
+<br>email1 dirty {{ userForm.get('email.email1').dirty }}
+<br>email1 touched {{ userForm.get('email.email1').touched }}
 
 
 <br>Dirty: {{ userForm.dirty }}

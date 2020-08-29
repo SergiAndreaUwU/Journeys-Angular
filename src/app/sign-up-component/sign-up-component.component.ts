@@ -1,8 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { state } from '@angular/animations';
+import { debounceTime} from 'rxjs/operators'
 
 
+
+
+function regexEmail(email:string): boolean{
+
+  const regex= /([A-Z]||[a-z])\w+@([A-Z]||[a-z])\w+(\.)([A-Z]||[a-z])\w+/g;
+  const match= regex.exec(email);
+
+  if(match){
+    // console.log("verdadero xD")
+    return true;
+  }
+  return false;
+
+  
+}
 
 
 
@@ -37,7 +52,7 @@ export class SignUpComponentComponent implements OnInit {
       firstName: ['', [Validators.maxLength(25), Validators.minLength(3), Validators.required]],
       lastName: ['', [Validators.maxLength(25), Validators.minLength(3), Validators.required]],
 
-      dateOfBirth: ['', [Validators.required]],
+      //dateOfBirth: ['', [Validators.required]],
 
       // email1: ['', [Validators.required]],
       // email2: ['', [Validators.required]],
@@ -55,15 +70,36 @@ export class SignUpComponentComponent implements OnInit {
       state: ['', [Validators.required]],
       country: ['', [Validators.required]],
       newsletter: false,
-      terms: [false, [Validators.required]]
+      terms: [false, [Validators.requiredTrue]]
 
 
     })
     
     var listOfStates;
 
-    this.userForm.get('email').valueChanges.subscribe(
-      val=> console.log(val)
+    this.userForm.get('email').valueChanges.pipe(
+      debounceTime(300)
+    ).subscribe(
+      val=> {
+        console.log(val.email1)
+
+       
+         
+         if (regexEmail(val.email1)){
+           this.userForm.get('email.email2').clearValidators();
+           this.userForm.get('email.email2').disable();
+           this.userForm.get('email.email2').updateValueAndValidity();
+         }else{
+          this.userForm.get('email.email2').setValidators(Validators.required)
+          this.userForm.get('email.email2').enable();
+          this.userForm.get('email.email2').updateValueAndValidity();
+         }
+
+         
+
+       
+        
+      }
     )
     
     this.userForm.get('country').valueChanges.subscribe(
@@ -94,7 +130,7 @@ export class SignUpComponentComponent implements OnInit {
     return ["Jalisco", "Michoacan", "Zacatecas", "Coahuila", "Durango", "Colima"]
 }
 usa(): Array<String> {
-  return ["usa1", "usa2"]
+  return ["usa1", "usa2","usa3"]
 }
 
   save() {
@@ -116,8 +152,8 @@ usa(): Array<String> {
       email1: 'sergioSAO5',
       email2: 'hotmail.com',
       email: 'sergioSAO5@hotmail.com',
-      country: 'mexico',
-      state:  'jalisco',
+      country: 'Mexico',
+      state:  'Jalisco',
       terms: true
     })
   }
