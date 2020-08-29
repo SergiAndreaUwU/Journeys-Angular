@@ -13,16 +13,19 @@
         
             <ul class="nav">
                 <li class="nav-item">
-                <a class="nav-link active" [routerLink]="['/']">Home</a>
+                    <a class="nav-link active" [routerLink]="['/']">Home</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/sign-up']">Sign up</a>
+                    <a class="nav-link" [routerLink]="['/journeys']">Journeys</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/sign-in']">Sign in</a>
+                    <a class="nav-link" [routerLink]="['/sign-up']">Sign up</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link disabled" [routerLink]="['/register']" tabindex="-1" aria-disabled="true">Register</a>
+                    <a class="nav-link" [routerLink]="['/sign-in']">Sign in</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" [routerLink]="['/register']" tabindex="-1" aria-disabled="true">Register</a>
                 </li>
             </ul>
             <router-outlet></router-outlet>

@@ -1,24 +1,12 @@
 .jumbotron{
-    background-image: url("../../assets/xd.jpg");
-    color: blanchedalmond;
+  background-color: rgba(26, 196, 238, 0.418);
   
 }
-img {
-  max-width: 100%;
-  max-height: 100%;
-  height: auto;
-}
-.portrait {
-  height: 80px;
-  width: 30px;
-}
+body{
 
-.landscape {
-  height: 30px;
-  width: 80px;
-}
-
-.square {
-  height: 75px;
-  width: 75px;
+  color: blanchedalmond;
+  width: 100%;
+  height: 100%;
+  background-color: blue;
+  background-image: url("../../assets/xd2.jpg");
 }
