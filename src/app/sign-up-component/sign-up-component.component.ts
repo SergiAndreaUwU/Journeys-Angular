@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl, EmailValidator } from '@angular/forms';
 import { debounceTime} from 'rxjs/operators'
 
 
 
 
-function regexEmail(email:string): boolean{
+function regexEmail1(email:string): boolean{
 
-  const regex= /([A-Z]||[a-z])\w+@([A-Z]||[a-z])\w+(\.)([A-Z]||[a-z])\w+/g;
+  const regex= /([A-Z])+@([A-Z])+(\.)([A-Z])+/gi;
   const match= regex.exec(email);
 
   if(match){
-    // console.log("verdadero xD")
     return true;
   }
   return false;
@@ -20,7 +19,19 @@ function regexEmail(email:string): boolean{
 }
 
 
+function regexEmail2(c:AbstractControl):{[key:string]:boolean} | null{
 
+  const regex= /([A-Z])+(\.)([A-Z])+/gi;
+  const match=regex.exec(c.value)
+
+  if(match){
+    console.log("email campo 2 valido")
+    return null;
+  }else
+  
+  return {'email':true};
+  
+}
 
 @Component({
   selector: 'app-sign-up-component',
@@ -39,8 +50,8 @@ export class SignUpComponentComponent implements OnInit {
   private validationMessages={
     minLength:"can't be less than 3 characters",
     maxLength:"can't be longer than 25 characters",
-    required: 'required field'
-    
+    required: 'required field',
+    email: "invalid email"
   };
  
 
@@ -65,7 +76,7 @@ export class SignUpComponentComponent implements OnInit {
 
       email:this.fb.group({
         email1: ['', [Validators.required]],
-         email2: ['', [Validators.required]],
+         email2: ['', regexEmail2],
        }),
       state: ['', [Validators.required]],
       country: ['', [Validators.required]],
@@ -77,22 +88,24 @@ export class SignUpComponentComponent implements OnInit {
     
     var listOfStates;
 
-    this.userForm.get('email').valueChanges.pipe(
-      debounceTime(300)
+    this.userForm.get('email.email1').valueChanges.pipe(
+      debounceTime(100)
     ).subscribe(
       val=> {
-        console.log(val.email1)
+        console.log(val)
 
        
          
-         if (regexEmail(val.email1)){
+         if (regexEmail1(val)){
            this.userForm.get('email.email2').clearValidators();
            this.userForm.get('email.email2').disable();
            this.userForm.get('email.email2').updateValueAndValidity();
          }else{
           this.userForm.get('email.email2').setValidators(Validators.required)
+          
           this.userForm.get('email.email2').enable();
           this.userForm.get('email.email2').updateValueAndValidity();
+          // if(this.userForm.get('email.email2').value){}
          }
 
          
@@ -116,8 +129,11 @@ export class SignUpComponentComponent implements OnInit {
       value=>this.setMessage(firstNameValidation)
       );
       
-    this.userForm.get('state').valueChanges.subscribe(  //no muestra nada en consola
-      val=>console.log(val)
+    this.userForm.get('state').valueChanges.subscribe(  
+      val=>{
+        val=val.toLowerCase();
+        console.log(val)
+      }
       )
 
   }

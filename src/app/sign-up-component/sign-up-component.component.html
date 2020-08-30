@@ -106,8 +106,9 @@
 </form>
 
 
-<br>email1 dirty {{ userForm.get('email.email1').dirty }}
-<br>email1 touched {{ userForm.get('email.email1').touched }}
+<br>email1: dirty {{ userForm.get('email.email1').dirty }}
+<br>email1: touched {{ userForm.get('email.email1').touched }}
+<br>email: valid {{ userForm.get('email').valid }}
 
 
 <br>Dirty: {{ userForm.dirty }}
