@@ -8,7 +8,18 @@ import {
 import { debounceTime } from 'rxjs/operators';
 
 function regexEmail(email: string): boolean {
-  const regex = /([A-Z]||[a-z])\w+@([A-Z]||[a-z])\w+(\.)([A-Z]||[a-z])\w+/g;
+  const regex = /([A-Z])\w+@([A-Z])\w+(\.)([A-Z])\w+/gi;
+  const match = regex.exec(email);
+
+  if (match) {
+
+    return true;
+  }
+  return false;
+}
+
+function regexEmail2(email: string): boolean {
+  const regex = /([A-Z])\w+(\.)([A-Z])\w+/gi;
   const match = regex.exec(email);
 
   if (match) {
@@ -59,7 +70,7 @@ export class SignUpComponentComponent implements OnInit {
 
       email: this.fb.group({
         email1: ['', [Validators.required]],
-        email2: ['', [Validators.required]],
+        email2: ['', [Validators.required],],
       }),
       state: ['', [Validators.required]],
       country: ['', [Validators.required]],
@@ -79,15 +90,16 @@ export class SignUpComponentComponent implements OnInit {
           if (regexEmail(val)) {
             this.userForm.get('email.email2').clearValidators();
             this.userForm.get('email.email2').disable();
-            this.userForm.get('email.email2').updateValueAndValidity();
+            
           
           } else {
             this.userForm
               .get('email.email2')
               .setValidators(Validators.required);
             this.userForm.get('email.email2').enable();
-            this.userForm.get('email.email2').updateValueAndValidity();
+
           }
+          this.userForm.get('email.email2').updateValueAndValidity();
         },
 
       );
@@ -97,6 +109,7 @@ export class SignUpComponentComponent implements OnInit {
       console.log(country);
       listOfStates = this.fnCallback(this[country]);
       this.states = listOfStates;
+      this.userForm.get('state').setValue("");
     });
 
 
@@ -104,6 +117,8 @@ export class SignUpComponentComponent implements OnInit {
     firstNameValidation.valueChanges.subscribe((value) =>
       this.setMessage(firstNameValidation)
     );
+
+    
 
     this.userForm.get('state').valueChanges.subscribe(
 
@@ -143,7 +158,7 @@ export class SignUpComponentComponent implements OnInit {
     this.userForm.patchValue({
       firstName: 'Sergio',
       lastName: 'Salazar',
-      dateOfBirth: '01/01/98',
+     // dateOfBirth: '01/01/98',
       email1: 'sergioSAO5',
       email2: 'hotmail.com',
       email: 'sergioSAO5@hotmail.com',
