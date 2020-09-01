@@ -1,127 +1,170 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { state } from '@angular/animations';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+} from '@angular/forms';
+import { debounceTime } from 'rxjs/operators';
 
+function regexEmail(email: string): boolean {
+  const regex = /([A-Z])\w+@([A-Z])\w+(\.)([A-Z])\w+/gi;
+  const match = regex.exec(email);
 
+  if (match) {
 
+    return true;
+  }
+  return false;
+}
 
+function regexEmail2(email: string): boolean {
+  const regex = /([A-Z])\w+(\.)([A-Z])\w+/gi;
+  const match = regex.exec(email);
 
+  if (match) {
+
+    return true;
+  }
+  return false;
+}
 
 @Component({
   selector: 'app-sign-up-component',
   templateUrl: './sign-up-component.component.html',
-  styleUrls: ['./sign-up-component.component.css']
+  styleUrls: ['./sign-up-component.component.css'],
 })
 export class SignUpComponentComponent implements OnInit {
-
- 
-  
-
-  states=[]
+  states = [];
   userForm: FormGroup;
-  validationMessage:string;
+  validationMessage: string;
 
-  private validationMessages={
-    minLength:"can't be less than 3 characters",
-    maxLength:"can't be longer than 25 characters",
-    required: 'required field'
-    
+  private validationMessages = {
+    minlength: "can't be less than 3 characters",
+    maxlength: "can't be longer than 25 characters",
+    required: 'required field',
   };
- 
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.userForm = this.fb.group({
+      firstName: [
+        '',
+        [
+          Validators.maxLength(25),
+          Validators.minLength(3),
+          Validators.required,
+        ],
+      ],
+      lastName: [
+        '',
+        [
+          Validators.maxLength(25),
+          Validators.minLength(3),
+          Validators.required,
+        ],
+      ],
 
-      firstName: ['', [Validators.maxLength(25), Validators.minLength(3), Validators.required]],
-      lastName: ['', [Validators.maxLength(25), Validators.minLength(3), Validators.required]],
+      //dateOfBirth: ['', [Validators.required]],
 
-      dateOfBirth: ['', [Validators.required]],
-
-      // email1: ['', [Validators.required]],
-      // email2: ['', [Validators.required]],
-      // email: ['', [Validators.email]],
-
-      // email: [this.fb.group({
-      //   email1: ['', [Validators.required]],
-      //   email2: ['', [Validators.required]],
-      // }), [Validators.email]],
-
-      email:this.fb.group({
+      email: this.fb.group({
         email1: ['', [Validators.required]],
-         email2: ['', [Validators.required]],
-       }),
+        email2: ['', [Validators.required],],
+      }),
       state: ['', [Validators.required]],
       country: ['', [Validators.required]],
       newsletter: false,
-      terms: [false, [Validators.required]]
+      terms: [false, [Validators.requiredTrue]],
+    });
 
-
-    })
-    
     var listOfStates;
 
-    this.userForm.get('email').valueChanges.subscribe(
-      val=> console.log(val)
-    )
-    
-    this.userForm.get('country').valueChanges.subscribe(
-         (country)=>{
-          country=country.toLowerCase();
-          console.log(country);
-          listOfStates=this.fnCallback(this[country]);
-          this.states= listOfStates  ;
-      })
+    this.userForm
+      .get('email.email1')
+      .valueChanges.pipe(debounceTime(300))
+      .subscribe(
+        (val) => {
+          console.log(val);
 
+          if (regexEmail(val)) {
+            this.userForm.get('email.email2').clearValidators();
+            this.userForm.get('email.email2').disable();
+            
+          
+          } else {
+            this.userForm
+              .get('email.email2')
+              .setValidators(Validators.required);
+            this.userForm.get('email.email2').enable();
 
-    const firstNameValidation=this.userForm.get('firstName');
-    firstNameValidation.valueChanges.subscribe(
-      value=>this.setMessage(firstNameValidation)
+          }
+          this.userForm.get('email.email2').updateValueAndValidity();
+        },
+
       );
-      
-    this.userForm.get('state').valueChanges.subscribe(  //no muestra nada en consola
-      val=>console.log(val)
-      )
 
+    this.userForm.get('country').valueChanges.subscribe((country) => {
+      country = country.toLowerCase();
+      console.log(country);
+      listOfStates = this.fnCallback(this[country]);
+      this.states = listOfStates;
+      this.userForm.get('state').setValue("");
+    });
+
+
+    const firstNameValidation = this.userForm.get('firstName');
+    firstNameValidation.valueChanges.subscribe((value) =>
+      this.setMessage(firstNameValidation)
+    );
+
+    
+
+    this.userForm.get('state').valueChanges.subscribe(
+
+      (val) => console.log(val)
+    );
   }
 
-
-  fnCallback(fn){
+  fnCallback(fn) {
     return fn();
   }
   mexico(): Array<String> {
-    return ["Jalisco", "Michoacan", "Zacatecas", "Coahuila", "Durango", "Colima"]
-}
-usa(): Array<String> {
-  return ["usa1", "usa2"]
-}
+    return [
+      'Jalisco',
+      'Michoacan',
+      'Zacatecas',
+      'Coahuila',
+      'Durango',
+      'Colima',
+    ];
+  }
+  usa(): Array<String> {
+    return ['usa1', 'usa2', 'usa3'];
+  }
 
   save() {
-    alert("savexd")
+    alert('savexd');
   }
   setMessage(c: AbstractControl): void {
     this.validationMessage = '';
     if ((c.touched || c.dirty) && c.errors) {
-      this.validationMessage = Object.keys(c.errors).map(
-        key => this.validationMessages[key]).join(' ');
+      this.validationMessage = Object.keys(c.errors)
+        .map((key) => this.validationMessages[key])
+        .join(' ');
     }
   }
   populateData(): void {
     this.userForm.patchValue({
-
       firstName: 'Sergio',
       lastName: 'Salazar',
-      dateOfBirth:'01/01/98',
+     // dateOfBirth: '01/01/98',
       email1: 'sergioSAO5',
       email2: 'hotmail.com',
       email: 'sergioSAO5@hotmail.com',
-      country: 'mexico',
-      state:  'jalisco',
-      terms: true
-    })
+      country: 'Mexico',
+      state: 'Jalisco',
+      terms: true,
+    });
   }
-
-
-  
 }
