@@ -5,8 +5,8 @@ import {
   Validators,
   AbstractControl,
 } from '@angular/forms';
-import { debounceTime } from 'rxjs/operators';
-
+import { debounceTime, tap } from 'rxjs/operators';
+import {HttpClient, HttpClientModule} from '@angular/common/http'
 function regexEmail(email: string): boolean {
   const regex = /([A-Z])\w+@([A-Z])\w+(\.)([A-Z])\w+/gi;
   const match = regex.exec(email);
@@ -35,6 +35,7 @@ function regexEmail2(email: string): boolean {
   styleUrls: ['./sign-up-component.component.css'],
 })
 export class SignUpComponentComponent implements OnInit {
+  private apiUrl= "https://wft-geo-db.p.mashape.com/"
   states = [];
   userForm: FormGroup;
   validationMessage: string;
@@ -45,7 +46,12 @@ export class SignUpComponentComponent implements OnInit {
     required: 'required field',
   };
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private http:HttpClient) {
+   
+  }
+
+  
+
 
   ngOnInit(): void {
     this.userForm = this.fb.group({
@@ -154,17 +160,25 @@ export class SignUpComponentComponent implements OnInit {
         .join(' ');
     }
   }
-  populateData(): void {
-    this.userForm.patchValue({
-      firstName: 'Sergio',
-      lastName: 'Salazar',
-     // dateOfBirth: '01/01/98',
-      email1: 'sergioSAO5',
-      email2: 'hotmail.com',
-      email: 'sergioSAO5@hotmail.com',
-      country: 'Mexico',
-      state: 'Jalisco',
-      terms: true,
-    });
+  populateData() {
+    // this.userForm.patchValue({
+    //   firstName: 'Sergio',
+    //   lastName: 'Salazar',
+    //  // dateOfBirth: '01/01/98',
+    //   email1: 'sergioSAO5',
+    //   email2: 'hotmail.com',
+    //   email: 'sergioSAO5@hotmail.com',
+    //   country: 'Mexico',
+    //   state: 'Jalisco',
+    //   terms: true,
+    // });
+
+  }
+
+  getCountries(){
+     console.log(this.http.get(this.apiUrl).subscribe(
+       val=> console.log(val)
+     ))
+    
   }
 }
