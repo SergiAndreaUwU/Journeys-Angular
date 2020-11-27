@@ -1,1 +1,24 @@
-<p>journeys works!</p>
+<div class="container">
+    <p>well hello there</p>
+  
+    <button class="btn btn-dark" (click)="clickedButton()">GET</button>
+  </div>
+  
+  <div class="container">
+    <div class="row">
+      <div *ngFor="let user of users" class="col-sm">
+        <div class="card" style="width: 18rem">
+      
+          <div class="card-body">
+            <h5 class="card-title">{{user}}</h5>
+            <p class="card-text">
+              Some quick example text to build on the card title and make up the
+              bulk of the card's content. asd
+            </p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
