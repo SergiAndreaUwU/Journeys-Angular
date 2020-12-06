@@ -4,7 +4,6 @@ import {ReactiveFormsModule} from '@angular/forms'
 import { AppComponent } from './app.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {InMemoryWebApiModule} from 'angular-in-memory-web-api'
-import {Countries} from './sign-up-component/countries';
 
 import { SignUpComponentComponent } from './sign-up-component/sign-up-component.component';
 import { RouterModule } from '@angular/router';
@@ -30,7 +29,6 @@ import {GeoDbFreeModule} from 'wft-geodb-angular-client'
     MatDatepickerModule,
     ReactiveFormsModule,
     HttpClientModule,
-    InMemoryWebApiModule.forRoot(Countries),
     GeoDbFreeModule.forRoot({
       apiKey: null,
       serviceUri: "http://geodb-free-service.wirefreethought.com"

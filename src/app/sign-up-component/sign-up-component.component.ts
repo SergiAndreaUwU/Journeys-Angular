@@ -5,8 +5,8 @@ import {
   Validators,
   AbstractControl,
 } from '@angular/forms';
-import { debounceTime, tap } from 'rxjs/operators';
-import {HttpClient, HttpClientModule} from '@angular/common/http'
+import { debounceTime } from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http'
 function regexEmail(email: string): boolean {
   const regex = /([A-Z])\w+@([A-Z])\w+(\.)([A-Z])\w+/gi;
   const match = regex.exec(email);
