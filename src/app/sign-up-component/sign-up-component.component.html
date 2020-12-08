@@ -12,10 +12,10 @@
         class="form-control"
         placeholder="Jane"
         formControlName="firstName"
-        [ngClass]="{ 'is-invalid': validationMessage }"
+        [ngClass]="{ 'is-invalid': firstNameValidation }"
       />
       <span class="invalid-feedback">
-        {{ validationMessage }}
+        {{ firstNameValidation }}
       </span>
     </div>
 
@@ -26,10 +26,10 @@
         class="form-control"
         placeholder="Doe"
         formControlName="lastName"
-        [ngClass]="{ 'is-invalid':validationMessage}"
+        [ngClass]="{ 'is-invalid':lastNameValidation}"
       />
       <span class="invalid-feedback">
-        {{ validationMessage }}
+      {{lastNameValidation}}
       </span>
     </div>
   </div>
