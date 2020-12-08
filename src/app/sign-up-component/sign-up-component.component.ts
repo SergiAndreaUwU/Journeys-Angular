@@ -39,6 +39,9 @@ export class SignUpComponentComponent implements OnInit {
   userForm: FormGroup;
   firstNameValidationField: string;
   lastNameValidationField: string;
+  emailValidationField: string;
+  termsValidationField: string;
+
 
   private validationMessages = {
     minlength: "can't be less than 3 characters",
@@ -49,9 +52,6 @@ export class SignUpComponentComponent implements OnInit {
   constructor(private fb: FormBuilder, private http:HttpClient) {
    
   }
-
-  
-
 
   ngOnInit(): void {
     this.userForm = this.fb.group({
@@ -71,8 +71,6 @@ export class SignUpComponentComponent implements OnInit {
           Validators.required,
         ],
       ],
-
-      //dateOfBirth: ['', [Validators.required]],
 
       email: this.fb.group({
         email1: ['', [Validators.required]],
@@ -96,6 +94,7 @@ export class SignUpComponentComponent implements OnInit {
           if (regexEmail(val)) {
             this.userForm.get('email.email2').clearValidators();
             this.userForm.get('email.email2').disable();
+            this.userForm.get('email.email2').setValue("");
             
           } else {
             this.userForm
@@ -120,23 +119,29 @@ export class SignUpComponentComponent implements OnInit {
 
 
     const firstNameValidation = this.userForm.get('firstName');
-    console.log(firstNameValidation)
-    firstNameValidation.valueChanges.subscribe((value) =>{
+
+    firstNameValidation.valueChanges.subscribe(() =>{
       this.firstNameValidationField= this.setMessage(firstNameValidation)
-      console.log(this.firstNameValidationField)
       }
     );
     const lastNameValidation = this.userForm.get('lastName');
-    console.log(lastNameValidation)
-    lastNameValidation.valueChanges.subscribe((value) =>{
+    lastNameValidation.valueChanges.subscribe(() =>{
       this.lastNameValidationField= this.setMessage(lastNameValidation)
-      console.log(this.lastNameValidationField)
+      }
+    );
+    const emailValidation = this.userForm.get('email');
+    emailValidation.valueChanges.subscribe(() =>{
+      this.emailValidationField= this.setMessage(emailValidation)
       }
     );
     
+    const termsValidation = this.userForm.get('terms');
+    termsValidation.valueChanges.subscribe(() =>{
+      this.termsValidationField= this.setMessage(termsValidation)
+      }
+    );
 
     this.userForm.get('state').valueChanges.subscribe(
-
       (val) => console.log(val)
     );
   }
@@ -162,9 +167,6 @@ export class SignUpComponentComponent implements OnInit {
     alert('savexd');
   }
 
-formControlNameSetMessage(formControlName):string{
-          return "xd";
-}
 
   setMessage(c: AbstractControl): string {
 
@@ -191,7 +193,4 @@ formControlNameSetMessage(formControlName):string{
 
   }
 
-  getCountries(){
-    
-  }
 }
