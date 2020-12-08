@@ -37,8 +37,8 @@ function regexEmail2(email: string): boolean {
 export class SignUpComponentComponent implements OnInit {
   states = [];
   userForm: FormGroup;
-  firstNameValidation: string;
-  lastNameValidation: string;
+  firstNameValidationField: string;
+  lastNameValidationField: string;
 
   private validationMessages = {
     minlength: "can't be less than 3 characters",
@@ -122,15 +122,15 @@ export class SignUpComponentComponent implements OnInit {
     const firstNameValidation = this.userForm.get('firstName');
     console.log(firstNameValidation)
     firstNameValidation.valueChanges.subscribe((value) =>{
-      this.firstNameValidation= this.setMessage(firstNameValidation)
-      console.log(firstNameValidation)
+      this.firstNameValidationField= this.setMessage(firstNameValidation)
+      console.log(this.firstNameValidationField)
       }
     );
     const lastNameValidation = this.userForm.get('lastName');
     console.log(lastNameValidation)
     lastNameValidation.valueChanges.subscribe((value) =>{
-      this.lastNameValidation= this.setMessage(lastNameValidation)
-      console.log(lastNameValidation)
+      this.lastNameValidationField= this.setMessage(lastNameValidation)
+      console.log(this.lastNameValidationField)
       }
     );
     
