@@ -35,7 +35,6 @@ function regexEmail2(email: string): boolean {
   styleUrls: ['./sign-up-component.component.css'],
 })
 export class SignUpComponentComponent implements OnInit {
-  private apiUrl= "https://wft-geo-db.p.mashape.com/"
   states = [];
   userForm: FormGroup;
   validationMessage: string;
@@ -97,7 +96,6 @@ export class SignUpComponentComponent implements OnInit {
             this.userForm.get('email.email2').clearValidators();
             this.userForm.get('email.email2').disable();
             
-          
           } else {
             this.userForm
               .get('email.email2')
@@ -119,9 +117,13 @@ export class SignUpComponentComponent implements OnInit {
     });
 
 
+
     const firstNameValidation = this.userForm.get('firstName');
-    firstNameValidation.valueChanges.subscribe((value) =>
-      this.setMessage(firstNameValidation)
+    console.log(firstNameValidation)
+    firstNameValidation.valueChanges.subscribe((value) =>{
+      this.setMessage(firstNameValidation, "firstName")
+      console.log(firstNameValidation)
+    }
     );
 
     
@@ -152,13 +154,22 @@ export class SignUpComponentComponent implements OnInit {
   save() {
     alert('savexd');
   }
-  setMessage(c: AbstractControl): void {
+
+formControlNameSetMessage(formControlName):string{
+          return "xd";
+}
+
+  setMessage(c: AbstractControl, formControlName): void {
     this.validationMessage = '';
+
     if ((c.touched || c.dirty) && c.errors) {
       this.validationMessage = Object.keys(c.errors)
         .map((key) => this.validationMessages[key])
         .join(' ');
+       
     }
+
+
   }
   populateData() {
     // this.userForm.patchValue({
@@ -176,9 +187,6 @@ export class SignUpComponentComponent implements OnInit {
   }
 
   getCountries(){
-     console.log(this.http.get(this.apiUrl).subscribe(
-       val=> console.log(val)
-     ))
     
   }
 }
