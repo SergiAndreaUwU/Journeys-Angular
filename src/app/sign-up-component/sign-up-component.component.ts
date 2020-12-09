@@ -6,7 +6,7 @@ import {
   AbstractControl,
 } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
-
+import {HttpClient} from '@angular/common/http'
 function regexEmail(email: string): boolean {
   const regex = /([A-Z])\w+@([A-Z])\w+(\.)([A-Z])\w+/gi;
   const match = regex.exec(email);
@@ -37,7 +37,11 @@ function regexEmail2(email: string): boolean {
 export class SignUpComponentComponent implements OnInit {
   states = [];
   userForm: FormGroup;
-  validationMessage: string;
+  firstNameValidationField: string;
+  lastNameValidationField: string;
+  emailValidationField: string;
+  termsValidationField: string;
+
 
   private validationMessages = {
     minlength: "can't be less than 3 characters",
@@ -45,7 +49,9 @@ export class SignUpComponentComponent implements OnInit {
     required: 'required field',
   };
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private http:HttpClient) {
+   
+  }
 
   ngOnInit(): void {
     this.userForm = this.fb.group({
@@ -65,8 +71,6 @@ export class SignUpComponentComponent implements OnInit {
           Validators.required,
         ],
       ],
-
-      //dateOfBirth: ['', [Validators.required]],
 
       email: this.fb.group({
         email1: ['', [Validators.required]],
@@ -90,8 +94,8 @@ export class SignUpComponentComponent implements OnInit {
           if (regexEmail(val)) {
             this.userForm.get('email.email2').clearValidators();
             this.userForm.get('email.email2').disable();
+            this.userForm.get('email.email2').setValue("");
             
-          
           } else {
             this.userForm
               .get('email.email2')
@@ -113,15 +117,35 @@ export class SignUpComponentComponent implements OnInit {
     });
 
 
-    const firstNameValidation = this.userForm.get('firstName');
-    firstNameValidation.valueChanges.subscribe((value) =>
-      this.setMessage(firstNameValidation)
-    );
 
-    
+    const firstNameValidation = this.userForm.get('firstName');
+
+    firstNameValidation.valueChanges.subscribe(() =>{
+      this.firstNameValidationField= this.setMessage(firstNameValidation)
+      }
+    );
+    const lastNameValidation = this.userForm.get('lastName');
+    lastNameValidation.valueChanges.subscribe(() =>{
+      this.lastNameValidationField= this.setMessage(lastNameValidation)
+      }
+    );
+    const emailValidation = this.userForm.get('email.email1');
+    emailValidation.valueChanges.subscribe(() =>{
+      this.emailValidationField= this.setMessage(emailValidation)
+      
+      console.log(this.emailValidationField)
+      }
+    );
+  
+    const termsValidation = this.userForm.get('terms');
+    termsValidation.valueChanges.subscribe(() =>{
+      this.termsValidationField= this.setMessage(termsValidation)
+      }
+    );
+      //setParent, updateOn,statusChange
+      
 
     this.userForm.get('state').valueChanges.subscribe(
-
       (val) => console.log(val)
     );
   }
@@ -146,25 +170,31 @@ export class SignUpComponentComponent implements OnInit {
   save() {
     alert('savexd');
   }
-  setMessage(c: AbstractControl): void {
-    this.validationMessage = '';
+
+
+  setMessage(c: AbstractControl): string {
+
     if ((c.touched || c.dirty) && c.errors) {
-      this.validationMessage = Object.keys(c.errors)
+      return Object.keys(c.errors)
         .map((key) => this.validationMessages[key])
         .join(' ');
     }
+
+
   }
-  populateData(): void {
-    this.userForm.patchValue({
-      firstName: 'Sergio',
-      lastName: 'Salazar',
-     // dateOfBirth: '01/01/98',
-      email1: 'sergioSAO5',
-      email2: 'hotmail.com',
-      email: 'sergioSAO5@hotmail.com',
-      country: 'Mexico',
-      state: 'Jalisco',
-      terms: true,
-    });
+  populateData() {
+    // this.userForm.patchValue({
+    //   firstName: 'Sergio',
+    //   lastName: 'Salazar',
+    //  // dateOfBirth: '01/01/98',
+    //   email1: 'sergioSAO5',
+    //   email2: 'hotmail.com',
+    //   email: 'sergioSAO5@hotmail.com',
+    //   country: 'Mexico',
+    //   state: 'Jalisco',
+    //   terms: true,
+    // });
+
   }
+
 }

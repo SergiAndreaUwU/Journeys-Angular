@@ -12,10 +12,10 @@
         class="form-control"
         placeholder="Jane"
         formControlName="firstName"
-        [ngClass]="{ 'is-invalid': validationMessage }"
+        [ngClass]="{ 'is-invalid': firstNameValidationField }"
       />
       <span class="invalid-feedback">
-        {{ validationMessage }}
+        {{ firstNameValidationField }}
       </span>
     </div>
 
@@ -26,17 +26,17 @@
         class="form-control"
         placeholder="Doe"
         formControlName="lastName"
-        [ngClass]="{ 'is-invalid':validationMessage}"
+        [ngClass]="{ 'is-invalid':lastNameValidationField}"
       />
       <span class="invalid-feedback">
-        {{ validationMessage }}
+      {{lastNameValidationField}}
       </span>
     </div>
   </div>
   <div class="form-row">
     <div class="col-md-6 mb-3">
       <label for="validationCustom03">country</label>
-      <select class="custom-select" formControlName="country">
+      <select class="custom-select" formControlName="country" >
         <option selected disabled value="">Choose...</option>
         <option>Mexico</option>
         <option>USA</option>
@@ -45,7 +45,7 @@
     </div>
     <div class="col-md-3 mb-3">
       <label for="validationCustom04">State</label>
-      <select class="custom-select" formControlName="state">
+      <select class="custom-select" formControlName="state" >
         <option selected disabled value="">Choose...</option>
 
         <option *ngFor="let state of states">{{ state }}</option>
@@ -63,9 +63,12 @@
           id="inlineFormInput"
           placeholder="JaneDoe"
           formControlName="email1"
+          [ngClass]="{'is-invalid': emailValidationField}"
         />
       </div>
-
+      <span class="invalid-feedback">
+        {{emailValidationField}}
+      </span>
       <div class="col-auto">
         <label for="validationCustom04">.</label>
         <div class="input-group mb-2">
@@ -78,6 +81,7 @@
             id="inlineFormInputGroup"
             placeholder="bestEmail.com"
             formControlName="email2"
+            [ngClass]="{'is-invalid': emailValidationField}"
           />
         </div>
       </div>
@@ -86,7 +90,10 @@
 
   <div class="form-group">
     <div class="form-check">
-      <input class="form-check-input" type="checkbox" formControlName="terms" />
+      <input class="form-check-input" 
+      type="checkbox" 
+      formControlName="terms"
+      [ngClass]="{ 'is-invalid':termsValidationField}" />
       <label class="form-check-label"> Agree to terms and conditions </label>
     </div>
     <div class="form-check">
@@ -103,7 +110,7 @@
 
   <button [disabled]="!userForm.valid" class="btn btn-primary" type="submit">Submit form</button>
 
-  <button class="btn btn-primary" (click)="populateData()">test</button>
+
 </form>
 
 <br />email1: dirty {{ userForm.get("email.email1").dirty }} <br />

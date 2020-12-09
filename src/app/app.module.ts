@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms'
 import { AppComponent } from './app.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {InMemoryWebApiModule} from 'angular-in-memory-web-api'
 
 import { SignUpComponentComponent } from './sign-up-component/sign-up-component.component';
 import { RouterModule } from '@angular/router';
@@ -11,7 +12,8 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import { RegisterComponent } from './register/register.component';
 import { JourneysComponent } from './journeys/journeys.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-
+import {HttpClientModule} from '@angular/common/http'
+import {GeoDbFreeModule} from 'wft-geodb-angular-client'
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,6 +28,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
     BrowserModule,
     MatDatepickerModule,
     ReactiveFormsModule,
+    HttpClientModule,
+    GeoDbFreeModule.forRoot({
+      apiKey: null,
+      serviceUri: "http://geodb-free-service.wirefreethought.com"
+    }),
     RouterModule.forRoot([
         {path:'', component: HomeComponent},
         {path:'journeys', component: JourneysComponent},
