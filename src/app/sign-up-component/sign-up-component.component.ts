@@ -129,17 +129,21 @@ export class SignUpComponentComponent implements OnInit {
       this.lastNameValidationField= this.setMessage(lastNameValidation)
       }
     );
-    const emailValidation = this.userForm.get('email');
+    const emailValidation = this.userForm.get('email.email1');
     emailValidation.valueChanges.subscribe(() =>{
       this.emailValidationField= this.setMessage(emailValidation)
+      
+      console.log(this.emailValidationField)
       }
     );
-    
+  
     const termsValidation = this.userForm.get('terms');
     termsValidation.valueChanges.subscribe(() =>{
       this.termsValidationField= this.setMessage(termsValidation)
       }
     );
+      //setParent, updateOn,statusChange
+      
 
     this.userForm.get('state').valueChanges.subscribe(
       (val) => console.log(val)

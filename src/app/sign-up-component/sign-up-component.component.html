@@ -63,9 +63,12 @@
           id="inlineFormInput"
           placeholder="JaneDoe"
           formControlName="email1"
+          [ngClass]="{'is-invalid': emailValidationField}"
         />
       </div>
-
+      <span class="invalid-feedback">
+        {{emailValidationField}}
+      </span>
       <div class="col-auto">
         <label for="validationCustom04">.</label>
         <div class="input-group mb-2">
@@ -78,6 +81,7 @@
             id="inlineFormInputGroup"
             placeholder="bestEmail.com"
             formControlName="email2"
+            [ngClass]="{'is-invalid': emailValidationField}"
           />
         </div>
       </div>
