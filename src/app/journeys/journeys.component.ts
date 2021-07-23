@@ -1,33 +1,29 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Component, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { api_users } from "../../api_calls/api_users"
+
 @Component({
   selector: 'app-journeys',
   templateUrl: './journeys.component.html',
   styleUrls: ['./journeys.component.css']
 })
-export class JourneysComponent implements OnInit {
-  title = 'AngularCRUD';
-  users = [];
-  apiUrl = 'https://reqres.in/api';
+export class JourneysComponent implements OnDestroy {
+  title: String = 'AngularCRUD';
+  users: Array<Object> = [];
+  subscription:Subscription;
 
-  constructor(private http: HttpClient) { }
+  constructor(private apiUsers: api_users) { }
 
-  ngOnInit() {
-
+  ngOnDestroy() {
+    if(this.subscription){ 
+      this.subscription.unsubscribe()
+      console.log("unsubscribed")
+    }
   }
 
-  getUsers(): Observable<any> {
-    return this.http.get("https://reqres.in/api/users?page=2");
-  }
-
-  getUserById(id: number): Observable<any> {
-    return this.http.get(this.apiUrl + "/users/" + id);
-  }
-
-  clickedButton() {
+  getPosts() {
     this.users = [];
-    this.getUsers().subscribe( 
+    this.subscription=this.apiUsers.getUsers().subscribe(
       val => {
         console.log(val)
         console.log(val.data);
