@@ -1,6 +1,10 @@
-# AngularPruebas
+# Journeys
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.2.
+
+##Description
+
+this web application is basically a blog where you can find exciting places near you if you want to travel and you don't know where to go or you are new in the city and wants to know your surrounding environment and maybe the next time you will have something to talk with your new friends, co-workers, family,etc.
 
 ## Development server
 
